@@ -6,10 +6,10 @@ import LoginForm from './LoginForm';
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+    <div className="min-h-screen flex items-center justify-center bg-white md:bg-gray-50 px-4">
+      <div className="w-full max-w-sm bg-white rounded-2xl p-8 flex flex-col items-center shadow-none md:shadow-lg">
         {/* Logo */}
-        <Logo className="w-16 h-16 mb-4" />
+        <Logo className="w-16 h-16 mb-4"/>
 
         {/* Name */}
         <h1 className="text-3xl font-bold text-center mb-1">
@@ -30,7 +30,7 @@ export default function LoginPage() {
         </p>
 
         {/* The Form */}
-        <LoginForm />
+        <LoginForm/>
 
         {/* Footer */}
         <div className="mt-8 flex flex-col items-center space-y-2 text-center text-xs text-gray-400">
