@@ -8,15 +8,24 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await sendOtp(email);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await sendOtp(email);
+    console.log('OTP Send Response:', response);
+
+    if (response.data.exists === false) {
+      // User doesn't exist → redirect to signup
+      router.push(`/signup?email=${encodeURIComponent(email)}`);
+    } else {
+      // User exists → go to verify page
       router.push(`/verify?email=${encodeURIComponent(email)}`);
-    } catch {
-      alert('Failed to send OTP');
     }
-  };
+  } catch (error) {
+    console.error('Failed to send OTP:', error);
+    alert('Failed to send OTP');
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-6">
@@ -52,31 +61,32 @@ export default function LoginForm() {
       </div>
 
       <button
-        type="submit"
-        className="
-          w-full flex items-center justify-center py-3 rounded-lg
-          bg-gradient-to-r from-purple-600 to-red-500
-          text-white font-medium
-          transition-transform transform
-          hover:scale-105 hover:shadow-lg
-        "
+          type="submit"
+          disabled={!email.trim()}
+          className={`
+    w-full flex items-center justify-center py-3 rounded-lg
+    bg-gradient-to-r from-purple-600 to-red-500
+    text-white font-medium transition-transform transform
+    ${!email.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:shadow-lg'}
+  `}
       >
         <span>Send OTP</span>
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6 ml-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="white"
-          strokeWidth={2}
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 ml-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            strokeWidth={2}
         >
           <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M13 7l5 5m0 0l-5 5m5-5H6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
           />
         </svg>
       </button>
+
     </form>
   );
 }

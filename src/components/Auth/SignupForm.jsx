@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { autocomplete } from '@/services/mapService';
 import {signup} from "@/services/authService";
-
+import { useSearchParams } from 'next/navigation';
 export default function SignupForm() {
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const prefillEmail = searchParams.get('email') || '';
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(prefillEmail);
   const [phone, setPhone] = useState('');
   const [whatsappOptIn, setWhatsappOptIn] = useState(false);
 
@@ -66,137 +67,138 @@ export default function SignupForm() {
       home_address: homeAddress
     };
     await signup(payload);
-    router.push(`/verify?email=${encodeURIComponent(email)}`);
+    router.push(`/home`);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-6">
-      {/* Full Name */}
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-          Full Name
-        </label>
-        <input
-          id="name"
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          required
-          className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
-          placeholder="Enter your full name"
-        />
-      </div>
-
-      {/* Email */}
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email Address
-        </label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
-          placeholder="Enter your email address"
-        />
-      </div>
-
-      {/* Phone */}
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-          Phone Number
-        </label>
-        <div className="flex">
-          <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-700">
-            +91
-          </span>
+      <form onSubmit={handleSubmit} className="w-full space-y-6">
+        {/* Full Name */}
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            Full Name
+          </label>
           <input
-            id="phone"
-            type="tel"
-            value={phone}
-            onChange={e => setPhone(e.target.value.replace(/\D/, ''))}
-            required
-            maxLength={10}
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-indigo-400"
-            placeholder="Enter 10-digit number"
+              id="name"
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
+              placeholder="Enter your full name"
           />
         </div>
-      </div>
 
-      {/* WhatsApp opt-in */}
-      <div className="flex items-start">
-        <input
-          id="whatsapp"
-          type="checkbox"
-          checked={whatsappOptIn}
-          onChange={e => setWhatsappOptIn(e.target.checked)}
-          className="mt-1 mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
-        />
-        <div className="text-sm">
-          <label htmlFor="whatsapp" className="font-medium text-gray-700">
-            Get safety alerts and updates on WhatsApp
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            Email Address
           </label>
-          <div className="text-gray-500">You can unsubscribe anytime</div>
+          <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
+              placeholder="Enter your email address"
+          />
         </div>
-      </div>
 
-      {/* Address autocomplete */}
-      <div className="relative">
-        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-          Home Address
-        </label>
-        <input
-          id="address"
-          type="text"
-          value={addressInput}
-          onChange={e => {
-            setAddressInput(e.target.value);
-            setHomeAddress(null);
-          }}
-          required
-          className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
-          placeholder="Start typing your address…"
-        />
-        {suggestions.length > 0 && (
-          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg max-h-48 overflow-auto">
-            {suggestions.map(s => (
-              <li
-                key={s.place_id}
-                onClick={() => pickSuggestion(s.place_id, s.description)}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              >
-                {s.description}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+        {/* Phone */}
+        <div className="w-full">
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+            Phone Number
+          </label>
+          <div className="relative rounded-lg shadow-sm w-full">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="text-gray-500">+91</span>
+            </div>
+            <input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={e => setPhone(e.target.value.replace(/\D/, ''))}
+                required
+                maxLength={10}
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+                placeholder="Enter 10-digit number"
+            />
+          </div>
+        </div>
 
-      {/* Submit */}
-      <button
-        type="submit"
-        className="
-          w-full flex items-center justify-center py-3 rounded-lg
-          bg-gradient-to-r from-purple-600 to-red-500
-          text-white font-medium
-          transition-transform transform
-          hover:scale-105 hover:shadow-lg
-        "
-      >
-        <span>Sign Up &amp; Continue</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6 ml-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="white"
-          strokeWidth={2}
+        {/* WhatsApp opt-in */}
+        <div className="flex items-start">
+          <input
+              id="whatsapp"
+              type="checkbox"
+              checked={whatsappOptIn}
+              onChange={e => setWhatsappOptIn(e.target.checked)}
+              className="mt-1 mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
+          />
+          <div className="text-sm">
+            <label htmlFor="whatsapp" className="font-medium text-gray-700">
+              Get safety alerts and updates on WhatsApp
+            </label>
+          </div>
+        </div>
+
+        {/* Address autocomplete */}
+        <div className="relative">
+          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+            Home Address
+          </label>
+          <input
+              id="address"
+              type="text"
+              value={addressInput}
+              onChange={e => {
+                setAddressInput(e.target.value);
+                setHomeAddress(null);
+              }}
+              required
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
+              placeholder="Start typing your address…"
+          />
+          {suggestions.length > 0 && (
+              <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg max-h-48 overflow-auto">
+                {suggestions.map(s => (
+                    <li
+                        key={s.place_id}
+                        onClick={() => pickSuggestion(s.place_id, s.description)}
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      {s.description}
+                    </li>
+                ))}
+              </ul>
+          )}
+        </div>
+
+        {/* Submit */}
+        <button
+            type="submit"
+            disabled={!email || !name || !phone}
+            className={`
+    w-full flex items-center justify-center py-3 rounded-lg
+    bg-gradient-to-r from-purple-600 to-red-500
+    text-white font-medium transition-transform transform
+    ${!email || !name || !phone
+                ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                : 'hover:scale-105 hover:shadow-lg'}
+  `}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
-      </button>
-    </form>
+          <span>Sign Up &amp; Continue</span>
+          <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 ml-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="white"
+              strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </button>
+      </form>
   );
 }

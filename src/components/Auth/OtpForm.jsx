@@ -24,7 +24,7 @@ export default function VerifyPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: call your verify endpoint with otp.join('')
-    router.push('/dashboard');
+    router.push('/home');
   };
 
   return (
@@ -65,44 +65,45 @@ export default function VerifyPage() {
         <form onSubmit={handleSubmit} className="w-full space-y-6">
           <div className="flex justify-between space-x-2">
             {otp.map((digit, i) => (
-              <input
-                key={i}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(e, i)}
-                ref={(el) => (inputsRef.current[i] = el)}
-                className="w-10 h-10 text-center border border-gray-300 rounded-lg
+                <input
+                    key={i}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleChange(e, i)}
+                    ref={(el) => (inputsRef.current[i] = el)}
+                    className="w-10 h-10 text-center border border-gray-300 rounded-lg
                            focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              />
+                />
             ))}
           </div>
 
           {/* Verify button */}
           <button
-            type="submit"
-            className="
-              w-full flex items-center justify-center py-3 rounded-lg
-              bg-gradient-to-r from-purple-600 to-red-500
-              text-white font-medium
-              transition-transform transform
-              hover:scale-105 hover:shadow-lg
-            "
+              type="submit"
+              disabled={otp.some((digit) => digit === '')}
+              className={`w-full flex items-center justify-center py-3 rounded-lg
+  bg-gradient-to-r from-purple-600 to-red-500
+  text-white font-medium transition-transform transform
+  ${otp.some((digit) => digit === '')
+    ? 'opacity-50 cursor-not-allowed pointer-events-none'
+    : 'hover:scale-105 hover:shadow-lg'}
+`}
           >
-            <span>Verify &amp; Continue</span>
+            <span>Verify</span>
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 ml-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="white"
-              strokeWidth={2}
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6 ml-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="white"
+                strokeWidth={2}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
               />
             </svg>
           </button>
@@ -119,15 +120,15 @@ export default function VerifyPage() {
         {/* Footer lock */}
         <div className="mt-6 flex items-center text-gray-400 text-xs">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 mr-1 text-purple-600"
-            viewBox="0 0 24 24"
-            fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4 mr-1 text-purple-600"
+              viewBox="0 0 24 24"
+              fill="currentColor"
           >
-            <path d="M12 17a2 2 0 100-4 2 2 0 000 4z" />
+            <path d="M12 17a2 2 0 100-4 2 2 0 000 4z"/>
             <path
-              fillRule="evenodd"
-              d="M6 9V7a6 6 0 1112 0v2a2 2 0 012
+                fillRule="evenodd"
+                d="M6 9V7a6 6 0 1112 0v2a2 2 0 012
                  2v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8a2 2
                  0 012-2zm2-2a4 4 0 018 0v2H8V7z"
               clipRule="evenodd"
