@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
+import {verifyOtp} from "@/services/authService";
 
 export default function VerifyPage() {
   const router = useRouter();
@@ -21,11 +22,22 @@ export default function VerifyPage() {
     if (i < 5) inputsRef.current[i + 1]?.focus();
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: call your verify endpoint with otp.join('')
-    router.push('/home');
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await verifyOtp(email, otp.join('')); // `otp` is assumed to be an array of digits
+    if (res.verified) {
+      localStorage.setItem('access_token', res.access_token);
+      localStorage.setItem('refresh_token', res.refresh_token);
+      router.push('/home');
+    } else {
+      alert("OTP verification failed.");
+    }
+  } catch (err) {
+    console.error('Verification error:', err);
+    alert("An error occurred while verifying the OTP.");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white md:bg-gray-50 px-4">

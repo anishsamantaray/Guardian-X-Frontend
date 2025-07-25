@@ -14,7 +14,7 @@ const handleSubmit = async (e) => {
     const response = await sendOtp(email);
     console.log('OTP Send Response:', response);
 
-    if (response.data.exists === false) {
+    if (response.exists === false) {
       // User doesn't exist → redirect to signup
       router.push(`/signup?email=${encodeURIComponent(email)}`);
     } else {

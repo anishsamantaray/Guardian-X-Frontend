@@ -98,14 +98,23 @@ const pickSuggestion = async (placeId, description) => {
       return;
     }
     const payload = {
-      name,
-      email,
-      phone: `+91${phone}`,
-      whatsapp_opt_in: whatsappOptIn,
-      home_address: homeAddress
-    };
+  name,
+  email,
+  phone: `+91${phone}`, // Already handled correctly
+  whatsapp_opt_in: whatsappOptIn,
+  home_address: {
+    line1: homeAddress.line1,
+    line2: homeAddress.line2 || "",
+    city: homeAddress.city,
+    state: homeAddress.state,
+    lat: homeAddress.lat,
+    long: homeAddress.long,
+    pincode: homeAddress.pincode
+  }
+};
+
     await signup(payload);
-    router.push(`/home`);
+    router.push(`/login`);
   };
 
   return (
