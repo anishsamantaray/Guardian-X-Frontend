@@ -1,10 +1,27 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
 import SignupForm from './SignupForm';
 
 export default function SignupPage() {
+  const [location, setLocation] = useState(null);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation({ lat, lng });
+        },
+        error => {
+          console.error('Error getting location:', error);
+        }
+      );
+    } else {
+      console.warn('Geolocation is not supported by this browser.');
+    }
+  }, []);
   return (
     <div className="min-h-screen flex items-center justify-center bg-white md:bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl p-8 md:shadow-lg flex flex-col items-center">
