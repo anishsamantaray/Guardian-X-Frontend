@@ -20,6 +20,18 @@ export const getPlaceDetails = async (placeId) => {
   }
 };
 
+export const fetchDistanceFromHome = async (email, currentLat, currentLng) => {
+  try {
+    const res = await api.get(
+      `/maps/distance-from-home?email=${email}&current_lat=${currentLat}&current_lng=${currentLng}`
+    );
+    return res.data;
+  } catch (err) {
+    console.error("Distance from home fetch error:", err);
+    return null;
+  }
+};
+
 export const reverseGeocode = async (lat, lng) => {
   try {
     const res = await api.get(`/maps/reverse-geocode?lat=${lat}&lng=${lng}`);

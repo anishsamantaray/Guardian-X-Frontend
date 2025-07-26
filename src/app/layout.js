@@ -1,3 +1,4 @@
+// app/layout.js (or wherever your RootLayout lives)
 import './globals.css';
 import { UserProvider } from '@/context/UserContext';
 
@@ -8,8 +9,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="h-full bg-gray-100">
+      <body className="h-full min-h-screen bg-gray-100">
         <UserProvider>
           {children}
         </UserProvider>

@@ -23,18 +23,25 @@ export default function AddressAutocomplete({ addressInput, setAddressInput, set
       </div>
       {suggestions.length > 0 && (
         <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg max-h-48 overflow-auto">
-          <li onClick={useCurrentLocation} className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-indigo-600 font-medium">
-            📍 Use My Current Location
-          </li>
-          {suggestions.map(s => (
-            <li
-              key={s.place_id}
-              onClick={() => pickSuggestion(s.place_id, s.description)}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-            >
-              {s.description}
+            <li onClick={useCurrentLocation}
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-indigo-600 font-medium">
+       <span className="text-purple-600 flex items-center gap-2">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor" className="w-5 h-5">
+    <path
+        d="M168 0C75.4 0 0 75.4 0 168c0 87.4 125.2 264.6 158.6 307.6a24 24 0 0 0 38.8 0C218.8 432.6 344 255.4 344 168 344 75.4 268.6 0 176 0h-8zm0 256a88 88 0 1 1 0-176 88 88 0 0 1 0 176z"/>
+  </svg>
+  <span>Use My Current Location</span>
+</span>
             </li>
-          ))}
+            {suggestions.map(s => (
+                <li
+                    key={s.place_id}
+                    onClick={() => pickSuggestion(s.place_id, s.description)}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                    {s.description}
+                </li>
+            ))}
         </ul>
       )}
     </div>
