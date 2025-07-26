@@ -18,7 +18,7 @@ const [locationDisplay, setLocationDisplay] = useState('');
   const [addressInput, setAddressInput] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [homeAddress, setHomeAddress] = useState(null);
-
+    const [loading, setLoading] = useState(false);
   const timerRef = useRef();
 
   // Fetch autocomplete suggestions
@@ -92,30 +92,41 @@ const pickSuggestion = async (placeId, description) => {
 };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!homeAddress) {
-      alert('Please select your address from the list.');
-      return;
+  e.preventDefault();
+  if (!homeAddress) {
+    alert('Please select your address from the list.');
+    return;
+  }
+
+  setLoading(true);
+
+  const payload = {
+    name,
+    email,
+    phone: `+91${phone}`,
+    whatsapp_opt_in: whatsappOptIn,
+    home_address: {
+      line1: homeAddress.line1,
+      line2: homeAddress.line2 || "",
+      city: homeAddress.city,
+      state: homeAddress.state,
+      lat: homeAddress.lat,
+      long: homeAddress.long,
+      pincode: homeAddress.pincode,
     }
-    const payload = {
-  name,
-  email,
-  phone: `+91${phone}`, // Already handled correctly
-  whatsapp_opt_in: whatsappOptIn,
-  home_address: {
-    line1: homeAddress.line1,
-    line2: homeAddress.line2 || "",
-    city: homeAddress.city,
-    state: homeAddress.state,
-    lat: homeAddress.lat,
-    long: homeAddress.long,
-    pincode: homeAddress.pincode
+  };
+
+  try {
+    await signup(payload);
+    router.push(`/login`);
+  } catch (error) {
+    console.error("Signup failed:", error);
+    alert("Signup failed. Please try again.");
+  } finally {
+    setLoading(false);
   }
 };
 
-    await signup(payload);
-    router.push(`/login`);
-  };
 
   return (
       <form onSubmit={handleSubmit} className="w-full space-y-6">
@@ -211,67 +222,79 @@ const pickSuggestion = async (placeId, description) => {
                       onChange={e => setWhatsappOptIn(e.target.checked)}
                       className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
                   />
-                  {/*    <label*/}
-                  {/*        htmlFor="whatsapp"*/}
-                  {/*        className="flex items-center justify-start sm:justify-center gap-2 text-sm font-medium text-gray-700"*/}
-                  {/*    >*/}
+
                   <span>Get safety alerts and updates on WhatsApp</span>
-                  {/*        <svg*/}
-                  {/*            xmlns="http://www.w3.org/2000/svg"*/}
-                  {/*            viewBox="0 0 448 512"*/}
-                  {/*            fill="currentColor"*/}
-                  {/*            className="w-5 h-5 text-green-600"*/}
-                  {/*        >*/}
-                  {/*            <path*/}
-                  {/*                d="M380.9 97.1C339 55.2 283.9 32 224.1 32c-114.9 0-208 93.1-208 208 0 36.7 9.6 72.4 27.8 104.1L12.3 480l138.7-36.4c30.1 16.5 64.2 25.2 98.2 25.2h.1c114.9 0 208-93.1 208-208 0-59.8-23.3-114.9-65.4-156.7zM224.1 438.6c-29.1 0-58.2-7.9-83.5-22.9l-6-3.5-82.3 21.6 22-80.1-3.9-6.3c-17.7-28.5-27-61.3-27-95 0-97.2 79.1-176.3 176.3-176.3 47 0 91.1 18.3 124.3 51.5 33.2 33.2 51.5 77.3 51.5 124.3 0 97.2-79.1 176.3-176.3 176.3zm101.7-138.5c-5.6-2.8-33.1-16.3-38.3-18.2-5.2-1.9-9-2.8-12.8 2.8s-14.7 18.2-18 22c-3.3 3.7-6.6 4.2-12.2 1.4-33.1-16.5-54.8-29.5-76.6-66.8-5.8-10 5.8-9.3 16.5-30.9 1.8-3.7.9-6.9-.5-9.7s-12.8-30.8-17.6-42.2c-4.7-11.3-9.5-9.8-12.8-10-3.3-.2-7.1-.2-10.9-.2s-10.1 1.4-15.4 6.9c-5.2 5.6-20.3 19.8-20.3 48.3s20.8 56.1 23.7 59.9c2.8 3.7 40.9 62.5 99.2 87.6 13.9 6 24.7 9.6 33.1 12.3 13.9 4.4 26.6 3.8 36.6 2.3 11.2-1.7 33.1-13.5 37.8-26.5 4.7-13 4.7-24.1 3.3-26.5-1.4-2.3-5.2-3.7-10.8-6.5z"/>*/}
-                  {/*        </svg>*/}
-                  {/*    </label>*/}
+
               </div>
               <p className="text-sm text-gray-400 pl-6">You can unsubscribe anytime</p>
           </div>
 
           <AddressAutocomplete
-  addressInput={addressInput}
-  setAddressInput={setAddressInput}
-  setHomeAddress={setHomeAddress}
-  suggestions={suggestions}
-  setSuggestions={setSuggestions}
-  pickSuggestion={pickSuggestion}
-  useCurrentLocation={handleUseCurrentLocation}
-/>
+              addressInput={addressInput}
+              setAddressInput={setAddressInput}
+              setHomeAddress={setHomeAddress}
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
+              pickSuggestion={pickSuggestion}
+              useCurrentLocation={handleUseCurrentLocation}
+          />
 
           {homeAddress && (
-  <div className="bg-gray-100 p-4 rounded-lg text-sm text-gray-800">
-    <p className="font-medium mb-1">📍 Selected Address:</p>
-    <p>{homeAddress.line1}</p>
-    {/*<p>{homeAddress.city}, {homeAddress.state} - {homeAddress.pincode}</p>*/}
-  </div>
-)}
+              <div className="bg-gray-100 p-4 rounded-lg text-sm text-gray-800">
+                  <p className="font-medium mb-1">📍 Selected Address:</p>
+                  <p>{homeAddress.line1}</p>
+                  {/*<p>{homeAddress.city}, {homeAddress.state} - {homeAddress.pincode}</p>*/}
+              </div>
+          )}
 
           {/* Submit */}
           <button
               type="submit"
-              disabled={!email || !name || !phone}
+              disabled={!email || !name || !phone || loading}
               className={`
     w-full flex items-center justify-center py-3 rounded-lg
     bg-gradient-to-r from-purple-600 to-red-500
     text-white font-medium transition-transform transform
-    ${!email || !name || !phone
+    ${!email || !name || !phone || loading
                   ? 'opacity-50 cursor-not-allowed pointer-events-none'
                   : 'hover:scale-105 hover:shadow-lg'}
   `}
           >
-              <span>Sign Up &amp; Continue</span>
-              <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 ml-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="white"
-                  strokeWidth={2}
-              >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-              </svg>
+              {loading ? (
+                  <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                  >
+                      <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                      />
+                      <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8H4z"
+                      />
+                  </svg>
+              ) : (
+                  <>
+                      <span>Sign Up &amp; Continue</span>
+                      <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-6 h-6 ml-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="white"
+                          strokeWidth={2}
+                      >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                      </svg>
+                  </>
+              )}
           </button>
       </form>
   );
