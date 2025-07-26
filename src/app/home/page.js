@@ -1,15 +1,5 @@
-'use client';
-
-import AppBar from '@/components/Layout/AppBar';
-import DistanceCard from '@/components/Map/DistanceCard';
+import Home from '@/components/Home/Home';
 
 export default function HomePage() {
-  return (
-    <>
-      <AppBar type="home" />
-      <div className="mt-4 px-4">
-        <DistanceCard />
-      </div>
-    </>
-  );
+  return <Home />;
 }
