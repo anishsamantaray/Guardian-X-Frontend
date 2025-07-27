@@ -39,3 +39,13 @@ export const refreshToken = async () => {
     throw error;
   }
 };
+
+export const logout = async () => {
+  try {
+    const res = await api.post('/user/logout');
+    return res.data;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    throw error;
+  }
+};

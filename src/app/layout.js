@@ -1,6 +1,6 @@
-// app/layout.js (or wherever your RootLayout lives)
 import './globals.css';
 import { UserProvider } from '@/context/UserContext';
+import AuthGuard from '@/components/auth/AuthGuard';
 
 export const metadata = {
   title: 'GuardianX',
@@ -12,7 +12,9 @@ export default function RootLayout({ children }) {
     <html lang="en" className="h-full bg-gray-100">
       <body className="h-full min-h-screen bg-gray-100">
         <UserProvider>
-          {children}
+          <AuthGuard>
+            {children}
+          </AuthGuard>
         </UserProvider>
       </body>
     </html>

@@ -5,8 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
 import {sendOtp, verifyOtp} from "@/services/authService";
+import { useUser } from '@/context/UserContext';
 
 export default function VerifyPage() {
+  const { setUser } = useUser();
   const router = useRouter();
   const params = useSearchParams();
   const email = params.get('email') || 'your email';
@@ -79,9 +81,10 @@ const handleSubmit = async (e) => {
   setLoading(true);
   try {
     const res = await verifyOtp(email, otp.join(''));
-    console.log(res);
     if (res.verified) {
       localStorage.setItem('access_token', res.access_token);
+      localStorage.setItem('email', email);
+      setUser({ email });
       router.push('/home');
     } else {
       alert("Invalid or expired OTP.");

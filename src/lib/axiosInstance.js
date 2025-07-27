@@ -25,7 +25,7 @@ api.interceptors.response.use(
         localStorage.setItem('access_token', data.access_token);
 
         originalRequest.headers['Authorization'] = `Bearer ${data.access_token}`;
-        return api(originalRequest); // 🔁 retry original request
+        return api(originalRequest); //
       } catch (refreshErr) {
         console.error("Session expired. Please log in again.");
         localStorage.removeItem('access_token');

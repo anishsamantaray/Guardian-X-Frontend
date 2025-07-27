@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation';
 import { autocomplete,getPlaceDetails, reverseGeocode } from '@/services/mapService';
 import {signup} from "@/services/authService";
 import { useSearchParams } from 'next/navigation';
+import { useUser } from '@/context/UserContext';
+
 export default function SignupForm() {
+    const { setUser } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const prefillEmail = searchParams.get('email') || '';
@@ -118,6 +121,8 @@ const pickSuggestion = async (placeId, description) => {
 
   try {
     await signup(payload);
+    setUser({ name, email });
+    localStorage.setItem('email', email);
     router.push(`/login`);
   } catch (error) {
     console.error("Signup failed:", error);
@@ -126,7 +131,6 @@ const pickSuggestion = async (placeId, description) => {
     setLoading(false);
   }
 };
-
 
   return (
       <form onSubmit={handleSubmit} className="w-full space-y-6">

@@ -1,12 +1,13 @@
 'use client';
-
 import AppBar       from '@/components/Layout/AppBar';
 import DistanceCard from '@/components/Map/DistanceCard';
 import SOSButton    from '@/components/Home/Sos';
 import ActionCard   from '@/components/Home/ActionCard';
 import QuickActions from "@/components/Home/QuickActions";
-
+ import ChatbotButton from '@/components/Home/ChatbotButton';
+import {useState} from "react";
 export default function Home() {
+    const [showChat, setShowChat] = useState(false);
   return (
       <main className="bg-gray-100 min-h-screen">
           <AppBar type="home" className="bg-transparent shadow-none text-white"/>
@@ -44,6 +45,9 @@ export default function Home() {
               </div>
           </section>
           <QuickActions />
+              <ChatbotButton onClick={() => setShowChat(prev => !prev)} />{showChat && (
+    <ChatWindow onClose={() => setShowChat(false)} />
+    )}
       </main>
   );
 }
