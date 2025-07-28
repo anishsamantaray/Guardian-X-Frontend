@@ -1,6 +1,6 @@
 import './globals.css';
 import { UserProvider } from '@/context/UserContext';
-import AuthGuard from '@/components/auth/AuthGuard';
+import AuthGuard from '@/components/Auth/AuthGuard';
 
 export const metadata = {
   title: 'GuardianX',
