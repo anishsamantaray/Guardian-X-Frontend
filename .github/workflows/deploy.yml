@@ -52,10 +52,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: infra
-        run: terraform init \
-              -backend-config="bucket=${{ secrets.STATE_BUCKET }}" \
-              -backend-config="key=${{ secrets.STATE_KEY }}" \
-              -backend-config="region=${{ secrets.AWS_REGION }}"
+        run: terraform init
 
       - name: Terraform Apply
         working-directory: infra
