@@ -1,11 +1,13 @@
 #
 resource "aws_s3_bucket" "site" {
   bucket = var.bucket_name
-  acl    = "private"
-
   tags = { Name = "NextJS Static Site" }
 }
 
+resource "aws_s3_bucket_acl" "site_acl" {
+  bucket = aws_s3_bucket.site.id
+  acl    = "private"
+}
 
 resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for ${aws_s3_bucket.site.bucket}"
@@ -56,9 +58,9 @@ resource "aws_cloudfront_distribution" "cdn" {
     max_ttl                = 86400
   }
 
-  price_class = "PriceClass_100"  # adjust as needed
-
-  # No viewer_certificate block → uses CloudFront’s default *.cloudfront.net cert
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
 
   restrictions {
     geo_restriction {
