@@ -3,10 +3,10 @@ resource "aws_s3_bucket" "site" {
   tags = { Name = "NextJS Static Site" }
 }
 
-resource "aws_s3_bucket_acl" "site_acl" {
-  bucket = aws_s3_bucket.site.id
-  acl    = "private"
-}
+# resource "aws_s3_bucket_acl" "site_acl" {
+#   bucket = aws_s3_bucket.site.id
+#   acl    = "private"
+# }
 
 resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for ${aws_s3_bucket.site.bucket}"
@@ -55,7 +55,16 @@ resource "aws_cloudfront_distribution" "cdn" {
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
+
+    forwarded_values {
+    query_string = false
+    cookies {
+      forward = "none"
+    }
   }
+  }
+
+
 
   viewer_certificate {
     cloudfront_default_certificate = true
