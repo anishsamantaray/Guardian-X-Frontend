@@ -52,15 +52,9 @@ jobs:
       # ——————————————————————
       # Sync Exported Static Site to S3
       # ——————————————————————
-      - name: Get bucket name from Terraform output
-        id: tf_output
-        working-directory: infra
-        run: |
-          echo "bucket_name=$(terraform output -raw bucket_name)" >> $GITHUB_OUTPUT
-
       - name: Sync static site to S3
         run: |
-          aws s3 sync ./out/ s3://${{ steps.tf_output.outputs.bucket_name }}/ --delete
+          aws s3 sync ./out/ s3://guardianx-site/ --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
