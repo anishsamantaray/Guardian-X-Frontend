@@ -1,0 +1,64 @@
+name: Deploy Static Site & Infra
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      # AWS creds for both Terraform & CLI
+      AWS_ACCESS_KEY_ID:       ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY:   ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION:              ${{ secrets.AWS_REGION }}
+
+      # Terraform will auto‐pick TF_VAR_*
+      TF_VAR_aws_region:       ${{ secrets.AWS_REGION }}
+      TF_VAR_bucket_name:      ${{ secrets.SITE_BUCKET_NAME }}
+
+      # Next.js build‐time env
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # ——————————————————————
+      # Build & export Next.js
+      # ——————————————————————
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install & Export
+        working-directory: ./your-frontend-folder
+        run: |
+          npm ci
+          npm run build
+          npm run export
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync ./your-frontend-folder/out/ s3://${{ secrets.SITE_BUCKET_NAME }}/ --delete
+
+      # ——————————————————————
+      # Terraform Init & Apply
+      # ——————————————————————
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        working-directory: infra
+        run: terraform init \
+              -backend-config="bucket=${{ secrets.STATE_BUCKET }}" \
+              -backend-config="key=${{ secrets.STATE_KEY }}" \
+              -backend-config="region=${{ secrets.AWS_REGION }}"
+
+      - name: Terraform Apply
+        working-directory: infra
+        run: terraform apply -auto-approve
