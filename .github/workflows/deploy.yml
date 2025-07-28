@@ -33,11 +33,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install & Export
+      - name: Build Code
         run: |
           npm ci
           npm run build
-          npm run export
 
       - name: Sync to S3
         run: |
