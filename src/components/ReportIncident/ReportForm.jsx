@@ -6,14 +6,18 @@ import IncidentDatePicker from '@/components/ReportIncident/IncidentDateModal';
 import IncidentLocationPicker from '@/components/ReportIncident/incidentLocation';
 import { autocomplete, getPlaceDetails } from '@/services/mapService';
 import { reportIncident } from '@/services/incidentService';
+import { useRouter } from 'next/navigation';
 
-export default function ReportForm({ onSuccess }) {
-    const [userEmail, setUserEmail] = useState('');
+export default function ReportForm() {
+  const router = useRouter();
+  const [userEmail, setUserEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-   const stored = localStorage.getItem('email');
-   if (stored) setUserEmail(stored);
- }, []);
+    const stored = localStorage.getItem('email');
+    if (stored) setUserEmail(stored);
+  }, []);
+
   const [incident, setIncident] = useState({
     date: '',
     time: '',
@@ -80,10 +84,12 @@ export default function ReportForm({ onSuccess }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setLoading(true);
 
     const ts = new Date(`${incident.date}T${incident.time}`);
     if (isNaN(ts.getTime())) {
       alert('Invalid date or time');
+      setLoading(false);
       return;
     }
 
@@ -100,13 +106,15 @@ export default function ReportForm({ onSuccess }) {
 
     try {
       await reportIncident(payload);
-      onSuccess && onSuccess();
+      router.push('/report-incident/thankyou');
     } catch {
       alert('Failed to report incident.');
+      setLoading(false);
     }
   };
 
   const isDisabled =
+    loading ||
     !incident.date ||
     !incident.time ||
     incident.lat == null ||
@@ -137,11 +145,13 @@ export default function ReportForm({ onSuccess }) {
               key={t.key}
               type="button"
               onClick={() => handleTypeClick(t.key)}
+              disabled={loading}
               className={`
                 flex items-center justify-center space-x-2 px-4 py-3 border rounded-lg hover:bg-gray-50
                 ${incident.type === t.key
                   ? 'border-indigo-600 bg-indigo-50'
                   : 'border-gray-200'}
+                ${loading ? 'opacity-50 cursor-not-allowed' : ''}
               `}
             >
               <span>{t.icon}</span>
@@ -158,20 +168,24 @@ export default function ReportForm({ onSuccess }) {
           value={incident.description}
           onChange={handleDescChange}
           placeholder="Describe what happened (optional)"
-          className="w-full h-24 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 resize-none"
+          disabled={loading}
+          className="w-full h-24 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 resize-none disabled:opacity-50"
         />
       </div>
 
       <button
         type="submit"
         disabled={isDisabled}
-        className="
+        className={`
           w-full py-3 bg-gradient-to-r from-purple-500 to-red-500 text-white
-          rounded-lg flex items-center justify-center space-x-2 disabled:opacity-50
-        "
+          rounded-lg flex items-center justify-center space-x-2
+          ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+        `}
       >
-        <PaperAirplaneIcon className="w-5 h-5 transform -rotate-45" />
-        <span>Report Incident</span>
+        <PaperAirplaneIcon
+          className={`w-5 h-5 transform -rotate-45 ${loading ? 'animate-spin' : ''}`}
+        />
+        <span>{loading ? 'Reporting…' : 'Report Incident'}</span>
       </button>
     </form>
   );
