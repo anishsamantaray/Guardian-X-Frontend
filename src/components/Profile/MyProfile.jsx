@@ -58,7 +58,7 @@ export default function MyProfile() {
 
   const nameParts = (user.name ?? '').trim().split(/\s+/);
   const initials = nameParts.map(p => p[0]).slice(0, 2).join('').toUpperCase();
-  const address = `${user.home_address?.line1}, ${user.home_address?.city}, ${user.home_address?.state} ${user.home_address?.pincode}`;
+  const address = `${user.home_address?.line1}`;
 
   return (
     <div className="min-h-screen bg-gray-50">
