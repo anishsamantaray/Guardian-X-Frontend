@@ -67,21 +67,22 @@ export default function MyProfile() {
         <AppBar type="internal" title="My Profile" />
       </div>
 
-      <main className="w-full px-0 mt-6 space-y-6">
+      <main className="mx-auto w-full max-w-full sm:max-w-[1333px] px-4 sm:px-6 lg:px-8 space-y-6 mt-6">
         {/* Profile header */}
         <section className="p-6 flex flex-col items-center">
-          <ProfilePic dpUrl={user.dpS3Url} initials={initials} size={80} />
+          <ProfilePic dpUrl={user.dpS3Url} initials={initials} size={80}/>
           <h1 className="mt-4 text-2xl font-bold text-gray-800">{user.name}</h1>
         </section>
 
         {/* Contact & Address summary */}
         <ProfileSummary
-          email={user.email}
-          phone={user.phone}
-          address={address}
-          onEdit={() => router.push('/profile/edit')}
+            email={user.email}
+            phone={user.phone}
+            address={address}
+            onEdit={() => router.push('/profile/edit')}
         />
-        <IncidentHistory email={user.email} />
+
+        <IncidentHistory email={user.email}/>
       </main>
     </div>
   );
