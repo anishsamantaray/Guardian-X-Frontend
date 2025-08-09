@@ -123,7 +123,7 @@ const pickSuggestion = async (placeId, description) => {
     await signup(payload);
     setUser({ name, email });
     localStorage.setItem('email', email);
-    router.push(`/login`);
+    router.push(`/home`);
   } catch (error) {
     console.error("Signup failed:", error);
     alert("Signup failed. Please try again.");
