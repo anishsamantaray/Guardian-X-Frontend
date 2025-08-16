@@ -19,7 +19,7 @@ GuardianX is a real-time personal safety application. This frontend is built usi
 ---
 ## 🖼️ Frontend
 <p align="center">
-  <img src="screens/guardianx-demo.gif" alt="GuardianX Demo" width="600"/>
+  <img src="screens/guardianx-demo.gif" alt="GuardianX Demo" width="200"/>
 </p>
 
 ---
