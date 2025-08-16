@@ -17,6 +17,21 @@ GuardianX is a real-time personal safety application. This frontend is built usi
 * 🎨 Clean UI with component-based architecture
 
 ---
+## 🖼️ Screenshots
+
+| Login Screen                                | OTP Screen                              |
+| ------------------------------------------- | --------------------------------------- |
+| ![Login Screen](screens/Login%20screen.jpg) | ![OTP Screen](screens/OTP%20screen.jpg) |
+
+| Home Page                             | Home 2                          |
+| ------------------------------------- | ------------------------------- |
+| ![Home Page](screens/Home%20page.jpg) | ![Home 2](screens/Home%202.jpg) |
+
+| Ally                      | Incident                          |
+| ------------------------- | --------------------------------- |
+| ![Ally](screens/ally.jpg) | ![Incident](screens/incident.jpg) |
+
+---
 
 ## 📁 Project Structure
 
@@ -121,5 +136,5 @@ npm run export
 
 ## 🧑‍💻 Authors & Contributors
 
-Built with ❤️ by the GuardianX team.
+Built with ❤️ by the Anish Samantaray.
 Feel free to contribute or raise issues!
