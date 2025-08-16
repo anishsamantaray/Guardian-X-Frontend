@@ -19,17 +19,33 @@ GuardianX is a real-time personal safety application. This frontend is built usi
 ---
 ## 🖼️ Screenshots
 
-| Login Screen                                | OTP Screen                              |
-| ------------------------------------------- | --------------------------------------- |
-| ![Login Screen](screens/Login%20screen.jpg) | ![OTP Screen](screens/OTP%20screen.jpg) |
+### 🔐 Login & OTP
 
-| Home Page                             | Home 2                          |
-| ------------------------------------- | ------------------------------- |
-| ![Home Page](screens/Home%20page.jpg) | ![Home 2](screens/Home%202.jpg) |
+<p align="center">
+  <img src="screens/Login%20screen.jpg" alt="Login Screen" width="350"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="screens/OTP%20screen.jpg" alt="OTP Screen" width="350"/>
+</p>
 
-| Ally                      | Incident                          |
-| ------------------------- | --------------------------------- |
-| ![Ally](screens/ally.jpg) | ![Incident](screens/incident.jpg) |
+<br>
+
+### 🏠 Home Views
+
+<p align="center">
+  <img src="screens/Home%20page.jpg" alt="Home Page" width="350"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="screens/Home%202.jpg" alt="Home 2" width="350"/>
+</p>
+
+<br>
+
+### 👥 Ally & 🚨 Incident
+
+<p align="center">
+  <img src="screens/ally.jpg" alt="Ally Screen" width="350"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="screens/incident.jpg" alt="Incident Screen" width="350"/>
+</p>
 
 ---
 
