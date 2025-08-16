@@ -6,6 +6,7 @@ import ActionCard   from '@/components/Home/ActionCard';
 import QuickActions from "@/components/Home/QuickActions";
  import ChatbotButton from '@/components/Home/ChatbotButton';
 import {useState} from "react";
+import SOSPage from "@/components/Home/Sospage";
 export default function Home() {
     const [showChat, setShowChat] = useState(false);
   return (
@@ -15,7 +16,7 @@ export default function Home() {
           {/* Distance + SOS */}
           <div className="mt-8 px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-8">
               <DistanceCard className="w-full max-w-md bg-gray-50 text-white"/>
-              <SOSButton/>
+              <SOSPage/>
           </div>
 
           {/* Quick Actions */}

@@ -102,13 +102,21 @@ export default function IncidentHistory({ email }) {
                         />
                       </Disclosure.Button>
 
-                      <Disclosure.Panel className="border-t px-6 pt-4 pb-6 space-y-3 text-gray-700">
-                        <p className="italic">{r.description || 'No additional details.'}</p>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <HashtagIcon className="w-4 h-4 text-gray-400"/>
-                          <span>Incident ID: {r.incident_id}</span>
-                        </div>
-                      </Disclosure.Panel>
+                      <Disclosure.Panel className="border-t px-4 sm:px-6 pt-4 pb-6 space-y-3 text-gray-700">
+  <p className="italic text-sm sm:text-base whitespace-pre-wrap break-words">
+    {r.description || 'No additional details.'}
+  </p>
+
+  <div className="flex flex-wrap items-start gap-2 text-sm text-gray-600">
+    <HashtagIcon className="w-4 h-4 text-gray-400 mt-0.5" />
+    <span className="min-w-0 break-all leading-snug">
+      Incident ID:{' '}
+      <span className="font-mono">
+        {r.incident_id}
+      </span>
+    </span>
+  </div>
+</Disclosure.Panel>
                     </>
                 )}
               </Disclosure>

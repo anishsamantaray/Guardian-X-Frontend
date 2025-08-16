@@ -285,17 +285,6 @@ export default function MyAllies() {
             ))}
           </div>
 
-          {/* Search within tab */}
-          {/*<div className="mb-3 sm:mb-4">*/}
-          {/*  <input*/}
-          {/*    type="text"*/}
-          {/*    value={search}*/}
-          {/*    onChange={e => setSearch(e.target.value)}*/}
-          {/*    placeholder={`Search ${activeTab}`}*/}
-          {/*    className="w-full border rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"*/}
-          {/*  />*/}
-          {/*</div>*/}
-
           {loading && <div className="p-6 text-center text-gray-500">Loading…</div>}
           {error && !loading && <div className="p-6 text-center text-red-600">Error: {error}</div>}
 
