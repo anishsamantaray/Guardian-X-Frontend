@@ -17,34 +17,9 @@ GuardianX is a real-time personal safety application. This frontend is built usi
 * 🎨 Clean UI with component-based architecture
 
 ---
-## 🖼️ Screenshots
-
-### 🔐 Login & OTP
-
+## 🖼️ Frontend
 <p align="center">
-  <img src="screens/Login%20screen.jpg" alt="Login Screen" width="350"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="screens/OTP%20screen.jpg" alt="OTP Screen" width="350"/>
-</p>
-
-<br>
-
-### 🏠 Home Views
-
-<p align="center">
-  <img src="screens/Home%20page.jpg" alt="Home Page" width="350"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="screens/Home%202.jpg" alt="Home 2" width="350"/>
-</p>
-
-<br>
-
-### 👥 Ally & 🚨 Incident
-
-<p align="center">
-  <img src="screens/ally.jpg" alt="Ally Screen" width="350"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="screens/incident.jpg" alt="Incident Screen" width="350"/>
+  <img src="screens/guardianx-demo.gif" alt="GuardianX Demo" width="600"/>
 </p>
 
 ---
