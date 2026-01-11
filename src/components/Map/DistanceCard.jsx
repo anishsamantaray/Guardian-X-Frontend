@@ -22,7 +22,7 @@ export default function DistanceCard() {
           const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
             console.log("Calling fetchDistanceFromHome with:");
-            const res = await fetchDistanceFromHome(email, lat, lng);
+            const res = await fetchDistanceFromHome(lat, lng);
             const dist = res?.distance_from_home ?? null;
             setDistance(dist);
             setLoading(false);
