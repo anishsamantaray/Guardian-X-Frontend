@@ -30,16 +30,6 @@ export const signup = async (data) => {
   }
 };
 
-// export const refreshToken = async () => {
-//   try {
-//     const res = await api.get('/user/refresh-token');
-//     return res.data;
-//   } catch (error) {
-//     console.error('Error refreshing token:', error);
-//     throw error;
-//   }
-// };
-
 export const logout = async () => {
   try {
     const res = await api.post('/user/logout');
